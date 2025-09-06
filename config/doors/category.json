@@ -1,0 +1,74 @@
+{
+  "key": "doors",
+  "title": "Двери",
+  "enabled": true,
+  "tabsIcon": "door",
+  "productModel": {
+    "idField": "model",
+    "titleField": "model",
+    "media": { "pathTemplate": "/static/doors/{slug}.jpg", "slugFrom": "model" }
+  },
+  "attributes": [
+    { "name": "style",  "title": "Стиль",  "type": "enum",   "source": "db:products.style", "required": true },
+    { "name": "model",  "title": "Модель", "type": "entity", "source": "db:products.model", "dependsOn": ["style"], "required": true },
+    { "name": "finish", "title": "Покрытие", "type": "enum",   "source": "db:products.finish", "dependsOn": ["model"], "required": true },
+    { "name": "color",  "title": "Цвет",    "type": "enum",   "source": "db:products.domeo_color", "dependsOn": ["finish"], "required": false },
+    { "name": "type",   "title": "Тип",     "type": "enum",   "enum": ["Распашная","Пенал","Раздвижная","Складная"], "required": true },
+    { "name": "width",  "title": "Ширина",  "type": "number", "source": "db:sizes.width",  "dependsOn": ["model","type"], "unit": "мм", "required": true },
+    { "name": "height", "title": "Высота",  "type": "number", "source": "db:sizes.height", "dependsOn": ["model","type"], "unit": "мм", "required": true },
+    { "name": "hardware_kit", "title": "Комплект фурнитуры", "type": "entity", "source": "fixture:kits", "priceField": "price" },
+    { "name": "handle",       "title": "Ручка",              "type": "entity", "source": "search:handles", "meta": {"groupFacet": true}, "priceField": "price" }
+  ],
+  "constraints": [
+    { "if": {"type": "Раздвижная"}, "mustHave": ["hardware_kit"], "forbid": [] },
+    { "if": {"finish": "зеркало"},   "forbid": ["handle"] }
+  ],
+  "pricing": {
+    "currency": "RUB",
+    "basePrice": { "source": "db:products.rrc_price", "by": ["model","finish","color","type","width","height"] },
+    "rules": [
+      { "when": {"type": "Пенал"},      "op": "mul", "value": 1.15, "code": "TYPE_POCKET" },
+      { "when": {"type": "Раздвижная"}, "op": "mul", "value": 1.20, "code": "TYPE_SLIDE" },
+      { "when": {"width": ">=900"},     "op": "add", "value": 1500,  "code": "WIDE_SURCHARGE" },
+      { "when": {"finish": "Шпон"},     "op": "mul", "value": 1.10,  "code": "VENEER_COEF" },
+      { "fromAttr": "hardware_kit.price", "op": "add", "code": "KIT" },
+      { "fromAttr": "handle.price",      "op": "add", "code": "HANDLE" },
+      { "op": "round", "to": 10 }
+    ]
+  },
+  "ui": {
+    "flow": [
+      { "step": "style",  "widget": "select.tiles", "label": "Выберите стиль" },
+      { "step": "model",  "widget": "select.grid",  "label": "Выберите модель", "showMedia": true },
+      { "step": "options", "sections": [
+        { "title": "Параметры", "fields": ["finish","color","type","width","height"] },
+        { "title": "Фурнитура", "fields": ["hardware_kit","handle"] }
+      ]},
+      { "step": "price",  "widget": "price.card" }
+    ],
+    "cart": { "lineTitle": "{model} — {type}", "columns": ["parameters","unitPrice","qty","sum","actions"] }
+  },
+  "import": {
+    "mapping": {
+      "model": "Модель",
+      "style": "Стиль",
+      "finish": "Покрытие",
+      "domeo_color": "Цвет",
+      "type": "Тип",
+      "width": "Ширина",
+      "height": "Высота",
+      "rrc_price": "РРЦ",
+      "photo_url": "Фото"
+    },
+    "uniqueBy": ["model","finish","domeo_color","type","width","height"],
+    "sheet": "Каталог",
+    "startRow": 2,
+    "media": { "doors": "static/doors" }
+  },
+  "export": {
+    "templates": {
+      "kp_html": "templates/doors/kp.html",
+      "factory_csv": "templates/doors/factory.csv"
+    }
+  }
+}

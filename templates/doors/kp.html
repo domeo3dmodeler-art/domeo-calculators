@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Коммерческое предложение</title>
+<style>body{font-family:Arial,Helvetica,sans-serif;margin:24px}</style></head>
+<body>
+  <h1>Коммерческое предложение — {{date}}</h1>
+  <h2>Категория: {{categoryTitle}}</h2>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <thead><tr><th>#</th><th>Позиция</th><th>Параметры</th><th>Кол-во</th><th>Цена</th><th>Сумма</th></tr></thead>
+    <tbody>
+      {{#each cart.items}}
+      <tr>
+        <td>{{inc @index}}</td>
+        <td>{{this.model}} — {{this.type}}</td>
+        <td>{{this.parameters}}</td>
+        <td>{{this.qty}}</td>
+        <td>{{this.unitPrice}}</td>
+        <td>{{this.sum}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <h3>Итого: {{cart.total}} {{currency}}</h3>
+  <h4>Разложение цены</h4>
+  <ul>
+    {{#each price.breakdown}}
+      <li>{{this.code}} — {{this.type}} {{this.value}} (Δ {{this.delta}})</li>
+    {{/each}}
+  </ul>
+</body></html>

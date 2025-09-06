@@ -1,0 +1,16 @@
+{
+  "mapping": {
+    "model": "Модель",
+    "style": "Стиль",
+    "finish": "Покрытие",
+    "domeo_color": "Цвет",
+    "type": "Тип",
+    "width": "Ширина",
+    "height": "Высота",
+    "rrc_price": "РРЦ",
+    "photo_url": "Фото"
+  },
+  "uniqueBy": ["model","finish","domeo_color","type","width","height"],
+  "sheet": "Каталог",
+  "startRow": 2
+}

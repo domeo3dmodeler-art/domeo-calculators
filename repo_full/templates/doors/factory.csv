@@ -1,0 +1,4 @@
+model;finish;color;type;width;height;qty;comment
+{{#each cart.items}}
+{{model}};{{finish}};{{color}};{{type}};{{width}};{{height}};{{qty}};{{comment}}
+{{/each}}

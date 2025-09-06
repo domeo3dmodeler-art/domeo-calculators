@@ -1,0 +1,10 @@
+{
+  "kits": [
+    { "id": "KIT_STD", "name": "Стандартный комплект", "price": 3200 },
+    { "id": "KIT_SOFT", "name": "С доводчиком", "price": 4200 }
+  ],
+  "handles": [
+    { "id": "HNDL_A", "name": "Ручка A", "price": 900 },
+    { "id": "HNDL_B", "name": "Ручка B", "price": 1400 }
+  ]
+}
