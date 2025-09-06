@@ -1,7 +1,0 @@
-.env
-node_modules
-dist
-dev.db
-uploads
-.DS_Store
-coverage
